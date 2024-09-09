@@ -116,9 +116,16 @@ public class Network {
     /**
      - Simple http GET call for a given url. No authoriztion added
      */
-    public func httpRequest<T: Decodable>(url: URL) async -> NetworkAPIResult<T> {
+    public func httpRequest<T: Decodable>(url: URL, headers: [String: String]?) async -> NetworkAPIResult<T> {
         do {
-            let (data, response) = try await session.data(from: url)
+            var urlRequest = URLRequest(url: url)
+            
+            if let headers = headers {
+                for key in headers.keys {
+                    urlRequest.setValue(headers[key], forHTTPHeaderField: key)
+                }
+            }
+            let (data, response) = try await session.data(for: urlRequest)
             
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode), let dataString = String(data: data, encoding: .utf8) else {
                 return (.error(NetworkError.requestFailed))
