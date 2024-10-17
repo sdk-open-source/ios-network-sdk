@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-public class Network {
+public class Network: INetwork {
     let configuration: URLSessionConfiguration
     let session: URLSession
     weak public var authManager: IAuthManager?

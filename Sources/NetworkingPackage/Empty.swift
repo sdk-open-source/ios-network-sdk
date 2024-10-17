@@ -7,6 +7,8 @@
 
 import Foundation
 // To be used when response is not suuposed to send any data
-public struct Empty {
-    
+public struct EmptyBody: Codable {
+    public init() {
+        
+    }
 }
